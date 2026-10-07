@@ -57,9 +57,11 @@ def create_product(
 ) -> ProductRead:
     require_organization_membership(organization_id, current_user, db)
 
+    # Exclude organization_id from body to strictly enforce URL origin
+    create_data = body.model_dump(exclude={"organization_id"})
     product = Product(
         organization_id=organization_id,
-        **body.model_dump(),
+        **create_data,
     )
     db.add(product)
     db.commit()
@@ -126,7 +128,7 @@ def update_product(
     require_organization_membership(organization_id, current_user, db)
     product = _get_product_or_404(product_id, organization_id, db)
 
-    update_data = body.model_dump(exclude_unset=True)
+    update_data = body.model_dump(exclude_unset=True, exclude={"id", "organization_id"})
     for field, value in update_data.items():
         setattr(product, field, value)
 
@@ -170,10 +172,12 @@ def add_product_file(
     require_organization_membership(organization_id, current_user, db)
     _get_product_or_404(product_id, organization_id, db)
 
+    # Exclude organization_id and product_id to prevent collision with URL params
+    file_data = body.model_dump(exclude={"organization_id", "product_id"})
     product_file = ProductFile(
         product_id=product_id,
         organization_id=organization_id,
-        **body.model_dump(),
+        **file_data,
     )
     db.add(product_file)
     db.commit()
