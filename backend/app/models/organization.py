@@ -57,6 +57,21 @@ class Organization(Base):
         back_populates="organization",
         cascade="all, delete-orphan",
     )
+    buyers = relationship(
+        "Buyer",
+        back_populates="organization",
+        cascade="all, delete-orphan",
+    )
+    suppliers = relationship(
+        "Supplier",
+        back_populates="organization",
+        cascade="all, delete-orphan",
+    )
+    contacts = relationship(
+        "CRMContact",
+        back_populates="organization",
+        cascade="all, delete-orphan",
+    )
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<Organization id={self.id} legal_name={self.legal_name!r}>"
