@@ -67,5 +67,6 @@ async function forwardRequest(
 
 export const GET = forwardRequest;
 export const POST = forwardRequest;
+export const PUT = forwardRequest;
 export const PATCH = forwardRequest;
 export const DELETE = forwardRequest;

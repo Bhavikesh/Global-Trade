@@ -6,15 +6,17 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   Globe,
   Building2,
-  User as UserIcon,
   LogIn,
   LogOut,
   Activity,
+  FileSpreadsheet,
+  Inbox,
 } from "lucide-react";
-
+import { useOrganization } from "@/lib/organization-context";
 
 export function Navbar() {
   const { user, isLoading } = useUser();
+  const { organizations, activeOrg, setActiveOrgId, userRole } = useOrganization();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,12 +36,26 @@ export function Navbar() {
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
             <Link
               href="/"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
               Overview
+            </Link>
+            <Link
+              href="/rfqs"
+              className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
+            >
+              <FileSpreadsheet className="h-4 w-4 text-blue-500" />
+              RFQs
+            </Link>
+            <Link
+              href="/supplier/invitations"
+              className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
+            >
+              <Inbox className="h-4 w-4 text-emerald-500" />
+              Supplier RFQs
             </Link>
             <Link
               href="/organizations"
@@ -53,19 +69,41 @@ export function Navbar() {
               className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
             >
               <Globe className="h-4 w-4" />
-              Company Profile
-            </Link>
-            <Link
-              href="/profile"
-              className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
-            >
-              <UserIcon className="h-4 w-4" />
-              User Profile
+              Profile
             </Link>
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {activeOrg && (
+            <div className="hidden lg:flex items-center gap-2 border border-border/80 bg-muted/40 rounded-lg px-2.5 py-1 text-xs">
+              <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+              <div className="flex flex-col">
+                <span className="font-medium text-foreground max-w-[130px] truncate leading-tight">
+                  {activeOrg.display_name || activeOrg.legal_name}
+                </span>
+                {userRole && (
+                  <span className="text-[10px] text-muted-foreground uppercase font-mono">
+                    {userRole}
+                  </span>
+                )}
+              </div>
+              {organizations.length > 1 && (
+                <select
+                  value={activeOrg.id}
+                  onChange={(e) => setActiveOrgId(e.target.value)}
+                  className="bg-transparent border-none text-[11px] text-muted-foreground cursor-pointer focus:outline-none"
+                  aria-label="Switch organization"
+                >
+                  {organizations.map((org) => (
+                    <option key={org.id} value={org.id} className="bg-popover text-foreground">
+                      {org.display_name || org.legal_name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          )}
           <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-medium border border-emerald-500/20">
             <Activity className="h-3 w-3 animate-pulse" />
             <span>API Online</span>

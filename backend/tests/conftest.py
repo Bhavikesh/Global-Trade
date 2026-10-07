@@ -16,6 +16,9 @@ from app.core.auth.jwt import verify_jwt
 from app.models.user import User  # noqa: F401
 from app.models.organization import Organization  # noqa: F401
 from app.models.organization_membership import OrganizationMembership  # noqa: F401
+from app.models.rfq import RFQ, RFQItem, RFQSupplierInvitation  # noqa: F401
+from app.models.quotation import Quotation, QuotationItem  # noqa: F401
+from app.models.negotiation import NegotiationNote  # noqa: F401
 
 TEST_DB_FILE = "./test_suite.db"
 TEST_DB_URL = f"sqlite:///{TEST_DB_FILE}"
@@ -36,6 +39,15 @@ def override_get_db() -> Generator[Session, None, None]:
 
 
 fastapi_app.dependency_overrides[get_db] = override_get_db
+
+
+@pytest.fixture()
+def db_session() -> Generator[Session, None, None]:
+    db = TestSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @pytest.fixture(autouse=True)
@@ -83,6 +95,8 @@ def as_user(claims: dict[str, Any]):
     Context manager that overrides the verify_jwt FastAPI dependency so requests
     within this block appear authenticated as the user described by `claims`.
     """
+    old_override = fastapi_app.dependency_overrides.get(verify_jwt)
+
     def _fake_jwt():
         return claims
 
@@ -90,4 +104,7 @@ def as_user(claims: dict[str, Any]):
     try:
         yield
     finally:
-        fastapi_app.dependency_overrides.pop(verify_jwt, None)
+        if old_override is not None:
+            fastapi_app.dependency_overrides[verify_jwt] = old_override
+        else:
+            fastapi_app.dependency_overrides.pop(verify_jwt, None)
