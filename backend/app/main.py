@@ -4,6 +4,8 @@ from app.core.config import settings
 from app.api.health import router as health_router
 from app.api.v1.users import router as users_router
 from app.api.v1.organizations import router as organizations_router
+from app.api.v1.buyers import router as buyers_router
+from app.api.v1.suppliers import router as suppliers_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +28,8 @@ if settings.CORS_ORIGINS:
 app.include_router(health_router, prefix=settings.API_V1_PREFIX, tags=["Health"])
 app.include_router(users_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 app.include_router(organizations_router, prefix=f"{settings.API_V1_PREFIX}/v1")
+app.include_router(buyers_router, prefix=f"{settings.API_V1_PREFIX}/v1")
+app.include_router(suppliers_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 
 
 @app.get("/")
