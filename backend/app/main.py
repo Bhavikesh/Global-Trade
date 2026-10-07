@@ -6,6 +6,7 @@ from app.api.v1.users import router as users_router
 from app.api.v1.organizations import router as organizations_router
 from app.api.v1.buyers import router as buyers_router
 from app.api.v1.suppliers import router as suppliers_router
+from app.api.v1.contacts import router as contacts_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -30,6 +31,7 @@ app.include_router(users_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 app.include_router(organizations_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 app.include_router(buyers_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 app.include_router(suppliers_router, prefix=f"{settings.API_V1_PREFIX}/v1")
+app.include_router(contacts_router, prefix=f"{settings.API_V1_PREFIX}/v1")
 
 
 @app.get("/")
