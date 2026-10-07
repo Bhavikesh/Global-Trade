@@ -194,3 +194,12 @@ class BuyerRead(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class BuyerListResponse(BaseModel):
+    """Paginated list response for Buyer records."""
+
+    items: list[BuyerRead]
+    total: int
+    limit: int
+    offset: int

@@ -213,3 +213,12 @@ class SupplierRead(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class SupplierListResponse(BaseModel):
+    """Paginated list response for Supplier records."""
+
+    items: list[SupplierRead]
+    total: int
+    limit: int
+    offset: int
