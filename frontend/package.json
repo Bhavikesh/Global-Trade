@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint src",
+    "test": "node --test tests/buyer_supplier_ux.test.mjs"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.31.0",

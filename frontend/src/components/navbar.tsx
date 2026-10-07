@@ -10,6 +10,8 @@ import {
   LogIn,
   LogOut,
   Activity,
+  Users,
+  Factory,
 } from "lucide-react";
 
 
@@ -40,6 +42,20 @@ export function Navbar() {
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
               Overview
+            </Link>
+            <Link
+              href="/buyers"
+              className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
+            >
+              <Users className="h-4 w-4" />
+              Buyers
+            </Link>
+            <Link
+              href="/suppliers"
+              className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1.5"
+            >
+              <Factory className="h-4 w-4" />
+              Suppliers
             </Link>
             <Link
               href="/organizations"
