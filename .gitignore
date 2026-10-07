@@ -19,6 +19,9 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+*.db
+*.sqlite3
+*.sqlite
 
 # Node.js & Next.js
 node_modules/

@@ -133,6 +133,9 @@ export default function SuppliersPage() {
     setSelectedOrgId(orgId);
     localStorage.setItem("globaltrade_active_org_id", orgId);
     setOffset(0);
+    setSuppliers([]);
+    setTotal(0);
+    setIsLoadingSuppliers(true);
   };
 
   // Refresh Suppliers list

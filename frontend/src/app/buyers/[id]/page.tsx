@@ -20,6 +20,7 @@ import {
   X,
   CheckCircle2,
   LogIn,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -139,7 +140,7 @@ export default function BuyerDetailPage({ params }: BuyerDetailPageProps) {
     let active = true;
     if (!orgId || !buyerId) return;
 
-    async function fetchBuyerData() {
+    async function loadBuyer() {
       try {
         const data = await fetchBuyer(orgId!, buyerId);
         if (!active) return;
@@ -158,7 +159,7 @@ export default function BuyerDetailPage({ params }: BuyerDetailPageProps) {
       }
     }
 
-    fetchBuyerData();
+    loadBuyer();
     return () => {
       active = false;
     };
@@ -319,13 +320,24 @@ export default function BuyerDetailPage({ params }: BuyerDetailPageProps) {
         <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
           {error || "An unexpected error occurred."}
         </p>
-        <Link
-          href={`/buyers${orgId ? `?org_id=${orgId}` : ""}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Return to Buyers Directory
-        </Link>
+        <div className="flex items-center justify-center gap-3">
+          <Button
+            onClick={() => refreshBuyer()}
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            Try Again
+          </Button>
+          <Link
+            href={`/buyers${orgId ? `?org_id=${orgId}` : ""}`}
+            className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Return to Buyers Directory
+          </Link>
+        </div>
       </div>
     );
   }

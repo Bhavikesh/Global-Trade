@@ -51,6 +51,7 @@ def setup_and_teardown_db():
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_test_file():
     yield
+    test_engine.dispose()
     if os.path.exists(TEST_DB_FILE):
         try:
             os.remove(TEST_DB_FILE)

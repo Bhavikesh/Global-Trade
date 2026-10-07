@@ -21,6 +21,7 @@ import {
   LogIn,
   Award,
   Layers,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -141,7 +142,7 @@ export default function SupplierDetailPage({ params }: SupplierDetailPageProps) 
     let active = true;
     if (!orgId || !supplierId) return;
 
-    async function fetchSupplierData() {
+    async function loadSupplier() {
       try {
         const data = await fetchSupplier(orgId!, supplierId);
         if (!active) return;
@@ -160,7 +161,7 @@ export default function SupplierDetailPage({ params }: SupplierDetailPageProps) 
       }
     }
 
-    fetchSupplierData();
+    loadSupplier();
     return () => {
       active = false;
     };
@@ -323,13 +324,24 @@ export default function SupplierDetailPage({ params }: SupplierDetailPageProps) 
         <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
           {error || "An unexpected error occurred."}
         </p>
-        <Link
-          href={`/suppliers${orgId ? `?org_id=${orgId}` : ""}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Return to Suppliers Directory
-        </Link>
+        <div className="flex items-center justify-center gap-3">
+          <Button
+            onClick={() => refreshSupplier()}
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            Try Again
+          </Button>
+          <Link
+            href={`/suppliers${orgId ? `?org_id=${orgId}` : ""}`}
+            className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Return to Suppliers Directory
+          </Link>
+        </div>
       </div>
     );
   }

@@ -132,6 +132,9 @@ export default function BuyersPage() {
     setSelectedOrgId(orgId);
     localStorage.setItem("globaltrade_active_org_id", orgId);
     setOffset(0);
+    setBuyers([]);
+    setTotal(0);
+    setIsLoadingBuyers(true);
   };
 
   // Refresh Buyers list
